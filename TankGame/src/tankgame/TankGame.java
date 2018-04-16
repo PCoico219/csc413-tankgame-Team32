@@ -45,6 +45,7 @@ public class TankGame extends JApplet implements Runnable {
         } catch (Exception e) {
             System.err.println(e + " NO RESOURCES ARE FOUND!");
         }
+        
         p1 = new Tank(tankP1, 736, 64, 5, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W,KeyEvent.VK_S, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_LEFT);
         p2 = new Tank(tankP2, 736, 1440, 5, KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I,KeyEvent.VK_K, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_RIGHT);
         gameEvents = new GameEvents();
@@ -93,7 +94,7 @@ public class TankGame extends JApplet implements Runnable {
 
     @Override
     public void paint(Graphics g) {
-        bimg = ((BufferedImage) createImage(1536, 1536));
+        bimg = ((BufferedImage) createImage(battleField_X_Size, battleField_Y_Size));
 
         g2 = bimg.createGraphics();
         if (!gameOver) {
@@ -150,8 +151,7 @@ public class TankGame extends JApplet implements Runnable {
                 winner = ("Player 2 win!   Score:" + p2.getScore());
                 loser = ("Player 1 lose!   Score:" + p1.getScore());
             }
-        } else if ((p2.isLose())
-                && (--gameOverCounter == 0)) {
+        } else if ((p2.isLose()) && (--gameOverCounter == 0)) {
             gameOver = true;
             System.out.println("P2 LOST");
             winner = ("Player 1 win!   Score:" + p1.getScore());

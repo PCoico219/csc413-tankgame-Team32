@@ -11,34 +11,38 @@ import tankgame.*;
 
 public class Tank extends GameObj {
 
-    protected int coolDown = 0, score = 0, health = 4, life = 3;
+    private int coolDown = 0, score = 0, health = 4, life = 3;
     private int angle = 0, shootCoolDown = 0;
     private final int leftShift = 2, rightShift = 3, windowSizeX = 1473, windowSizeY = 1473;
-    protected boolean powerUp;
-    protected int spawnPointX, spawnPointY;
+    private boolean powerUp;
+    private int spawnPointX, spawnPointY;
     private int left, right, up, down;
     private int shootKey, shootRate, shootKeyPosition;
     private boolean moveLeft, moveRight, moveUp, moveDown;
     private Tank p1, p2;
+    //private int height, width, speed;
+    //private int x, y;
+    //private Image img;
 
     public Tank(Image img, int x, int y, int speed, int left, int right, int up, int down, int sKey, int keyPosition) {
         super(img, x, y, speed);
-        this.powerUp = false;
-        this.width = (img.getWidth(null) / 2);
+        this.img = img;
+        powerUp = false;
+        this.width = img.getWidth(null);
         this.left = left;
         this.right = right;
         this.up = up;
         this.down = down;
-        this.shootKey = sKey;
-        this.shootKeyPosition = keyPosition;
-        this.moveLeft = false;
-        this.moveRight = false;
-        this.moveUp = false;
-        this.moveDown = false;
-        this.boom = false;
-        this.shootRate = 50;
-        this.spawnPointX = x;
-        this.spawnPointY = y;
+        shootKey = sKey;
+        shootKeyPosition = keyPosition;
+        moveLeft = false;
+        moveRight = false;
+        moveUp = false;
+        moveDown = false;
+        boom = false;
+        shootRate = 50;
+        spawnPointX = x;
+        spawnPointY = y;
     }
 
     public void setScore(int s) {
@@ -90,8 +94,7 @@ public class Tank extends GameObj {
             AffineTransform rotation = AffineTransform.getTranslateInstance(x, y);
             rotation.rotate(Math.toRadians(angle), img.getWidth(null) / 2, img.getHeight(null) / 2);
             g.drawImage(img, rotation, null);
-            if ((!p1.isRespawning()) && (!p2.isRespawning())
-                    && (p1.collision(p2.x, p2.y, p2.width, p2.height))) {
+            if ((!p1.isRespawning()) && (!p2.isRespawning()) && (p1.collision(p2.x, p2.y, p2.width, p2.height))) {
                 if (p1.x > x) {
                     p1.x += speed * 5;
                     p2.x -= speed * 5;

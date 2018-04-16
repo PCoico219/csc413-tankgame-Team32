@@ -10,7 +10,6 @@ import java.util.Observer;
 public abstract class GameObj implements Observer {
 
     protected int x, y, speed, height, width;
-    protected int planeLoop = 0;
     Rectangle bbox;
     protected boolean boom;
     protected Image[] imgs = new Image[3];
@@ -26,28 +25,40 @@ public abstract class GameObj implements Observer {
     }
 
     public boolean collision(int x, int y, int w, int h) {
-        bbox = new Rectangle(x, y, width, height);
+        bbox = new Rectangle(this.x, this.y, this.width, this.height);
         Rectangle otherBBox = new Rectangle(x, y, w, h);
-        if ((bbox.intersects(otherBBox)) && (!boom)) {
+        if ((this.bbox.intersects(otherBBox)) && (!boom)) {
             return true;
         }
         return false;
     }
 
+    public Image getImg() {
+        return this.img;
+    }
+    
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public int getWidth() {
         return width;
     }
+    
+    public int getSpeed() {
+        return speed;
+    }
 
     public int getHeight() {
         return height;
+    }
+    
+    public boolean getBoom() {
+        return boom;
     }
     
     @Override

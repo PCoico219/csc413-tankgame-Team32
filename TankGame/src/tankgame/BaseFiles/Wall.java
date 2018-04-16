@@ -11,7 +11,9 @@ public class Wall extends GameObj {
     private Tank p2 = TankGame.getTank(2), p1 = TankGame.getTank(1);
     private final Rectangle wallRect;
     private int height, width, coolDown;
-    boolean breakableWall;
+    private int x, y;
+    boolean breakableWall, boom = getBoom();
+    private Image img = getImg();
 
     public Wall(Image img, int x, int y, boolean weakWall) {
         super(img, x, y, 0);
@@ -20,7 +22,7 @@ public class Wall extends GameObj {
         width = img.getWidth(null);
         height = img.getHeight(null);
         boom = false;
-        wallRect = new Rectangle(x, y, this.width, this.height);
+        wallRect = new Rectangle(x, y, width, height);
     }
 
     public boolean isDestroyAble() {
