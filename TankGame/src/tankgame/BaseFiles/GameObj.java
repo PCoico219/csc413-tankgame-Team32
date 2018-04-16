@@ -9,12 +9,8 @@ import java.util.Observer;
 
 public abstract class GameObj implements Observer {
 
-    public int x;
-    public int y;
-    public int speed;
-    public int height;
-    public int width;
-    public int planeLoop = 0;
+    protected int x, y, speed, height, width;
+    protected int planeLoop = 0;
     Rectangle bbox;
     protected boolean boom;
     protected Image[] imgs = new Image[3];
@@ -30,30 +26,31 @@ public abstract class GameObj implements Observer {
     }
 
     public boolean collision(int x, int y, int w, int h) {
-        this.bbox = new Rectangle(this.x, this.y, this.width, this.height);
+        bbox = new Rectangle(x, y, width, height);
         Rectangle otherBBox = new Rectangle(x, y, w, h);
-        if ((this.bbox.intersects(otherBBox)) && (!this.boom)) {
+        if ((bbox.intersects(otherBBox)) && (!boom)) {
             return true;
         }
         return false;
     }
 
     public int getX() {
-        return this.x;
+        return x;
     }
 
     public int getY() {
-        return this.y;
+        return y;
     }
 
     public int getWidth() {
-        return this.width;
+        return width;
     }
 
     public int getHeight() {
-        return this.height;
+        return height;
     }
-
+    
+    @Override
     public void update(Observable obj, Object arg) {
     }
 

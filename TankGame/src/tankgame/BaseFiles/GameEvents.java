@@ -9,15 +9,15 @@ public class GameEvents extends Observable {
     public Object event;
 
     public void setValue(KeyEvent e) {
-        this.type = 1;
-        this.event = e;
+        type = 1;
+        event = e;
         setChanged();
         notifyObservers(this);
     }
 
     public void setValue(String msg) {
-        this.type = 2;
-        this.event = msg;
+        type = 2;
+        event = msg;
         setChanged();
         notifyObservers(this);
     }
