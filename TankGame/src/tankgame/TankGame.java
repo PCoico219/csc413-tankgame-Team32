@@ -12,7 +12,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
-
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class TankGame extends JApplet implements Runnable {
 
@@ -33,6 +37,10 @@ public class TankGame extends JApplet implements Runnable {
     private Image tankP1, tankP2;
     private BufferedImage background, bimg, bimg2;
     private BufferedImage player_1_window, player_2_window;
+    private InputStream map;
+    private Image wall, breakableWall;
+
+    private ArrayList<Wall> walls = new ArrayList<>();
 
     @Override
     public void init() {
@@ -42,12 +50,16 @@ public class TankGame extends JApplet implements Runnable {
             tankP1 = ImageIO.read(new File("Resources/Tank1.gif"));
             tankP2 = ImageIO.read(new File("Resources/Tank2.gif"));
             life = ImageIO.read(new File("Resources/life.png"));
+            map = new FileInputStream("Resources/tankmap.txt");
+            wall = ImageIO.read(new File("Resources/Wall1.gif"));
+            breakableWall = ImageIO.read(new File("Resources/Wall2.gif"));
+
         } catch (Exception e) {
             System.err.println(e + " NO RESOURCES ARE FOUND!");
         }
-        
-        p1 = new Tank(tankP1, 736, 64, 5, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W,KeyEvent.VK_S, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_LEFT);
-        p2 = new Tank(tankP2, 736, 1440, 5, KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I,KeyEvent.VK_K, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_RIGHT);
+
+        p1 = new Tank(tankP1, 736, 64, 5, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_LEFT);
+        p2 = new Tank(tankP2, 736, 1440, 5, KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I, KeyEvent.VK_K, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_RIGHT);
         gameEvents = new GameEvents();
 
         gameEvents.addObserver(p1);
@@ -55,6 +67,7 @@ public class TankGame extends JApplet implements Runnable {
 
         KeyControl key = new KeyControl();
         addKeyListener(key);
+        mapPrinter();
     }
 
     public static Tank getTank(int j) {
@@ -67,7 +80,7 @@ public class TankGame extends JApplet implements Runnable {
     public static TankGame getTankGame() {
         return TANKGAME;
     }
-    
+
     public static GameEvents getGameEvents() {
         return gameEvents;
     }
@@ -107,8 +120,37 @@ public class TankGame extends JApplet implements Runnable {
         }
     }
 
+    public void mapPrinter() {
+        BufferedReader line = new BufferedReader(new InputStreamReader(map));
+        String number;
+        int position = 0;
+        try {
+            number = line.readLine();
+            while (number != null) {
+                System.out.println(position);
+                for (int i = 0; i < number.length(); i++) {
+                    if (number.charAt(i) == '1') {
+                        walls.add(new Wall(wall, ((i) % 48) * 32, ((position) % 49) * 32, false));
+                    } else if (number.charAt(i) == '2') {
+                        walls.add(new Wall(breakableWall, (i % 48) * 32, (position % 49) * 32, true));
+                    }
+                }
+                position++;
+                number = line.readLine();
+            }
+        } catch (Exception e) {
+            System.err.println("MapPrinter" + e);
+        }
+    }
+
     public void drawDemo() {
         drawBackGround();
+
+        if (!walls.isEmpty()) {
+            for (int i = 0; i <= walls.size() - 1; i++) {
+                walls.get(i).draw(this, g2);
+            }
+        }
 
         p1.draw(this, g2);
         p1.updateMove();
@@ -124,26 +166,26 @@ public class TankGame extends JApplet implements Runnable {
         playerViewBoundChecker();
 
         g2.drawImage(player_1_window, 0, 0, this);
-        
+
         if (p1.getLife() != 0) {
             for (int i = 0; i < p1.getLife(); i++) {
                 g2.drawImage(life, i * 32, windowSize.height - 20, this);
             }
         }
-        
+
         g2.drawImage(player_2_window, windowSize.width / 2, 0, this);
-        
+
         if (p2.getLife() != 0) {
             for (int i = 0; i < p2.getLife(); i++) {
                 g2.drawImage(life, windowSize.width - 3 * life.getWidth(null) + i * life
                         .getWidth(null), windowSize.height - 20, this);
             }
         }
-        
+
         Image scaledMap = bimg.getScaledInstance(200, 200, 2);
 
         g2.drawImage(scaledMap, windowSize.width / 2 - 100, windowSize.height - 200, 200, 200, this);
-        
+
         if (p1.isLose()) {
             if (--gameOverCounter == 0) {
                 gameOver = true;
@@ -165,7 +207,7 @@ public class TankGame extends JApplet implements Runnable {
 
         int NumberX = 5;
         int NumberY = 7;
-        
+
         for (int i = 0; i < NumberY; i++) {
             for (int j = 0; j < NumberX; j++) {
                 g2.drawImage(background, j * tileWidth, i * tileHeight, tileWidth, tileHeight, this);
