@@ -8,6 +8,7 @@ import java.awt.image.ImageObserver;
 import java.io.PrintStream;
 import java.util.Observable;
 import tankgame.*;
+import projectile.*;
 
 public class Tank extends GameObj {
 
@@ -20,11 +21,12 @@ public class Tank extends GameObj {
     private int shootKey, shootRate, shootKeyPosition;
     private boolean moveLeft, moveRight, moveUp, moveDown;
     private Tank p1, p2;
+    private TankGame obj;
     //private int height, width, speed;
     //private int x, y;
     //private Image img;
 
-    public Tank(Image img, int x, int y, int speed, int left, int right, int up, int down, int sKey, int keyPosition) {
+    public Tank(Image img, int x, int y, int speed, int left, int right, int up, int down, int sKey) {
         super(img, x, y, speed);
         this.img = img;
         powerUp = false;
@@ -34,7 +36,6 @@ public class Tank extends GameObj {
         this.up = up;
         this.down = down;
         shootKey = sKey;
-        shootKeyPosition = keyPosition;
         moveLeft = false;
         moveRight = false;
         moveUp = false;
@@ -79,6 +80,30 @@ public class Tank extends GameObj {
     public boolean isRespawning() {
         return coolDown != 0;
     }
+    
+    
+    public void ShootBullet(Tank a){
+        
+        obj = TankGame.getTankGame();
+        
+        //if(powerUp == true){
+            //obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(), speed*3, this, 0, 2));
+        //    obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(),speed*3,this,0,2));
+            
+        //}
+        //else{
+            // obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
+            //when shift is pressed need to add a bullet to the bullet arraylist and then project it on screen
+            
+            obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
+            
+            
+           
+       // }
+        
+        
+    }
+    
 
     @Override
     public void draw(ImageObserver obs, Graphics2D g) {
@@ -157,17 +182,11 @@ public class Tank extends GameObj {
                     moveDown = true;
                 }
             }
-            if ((e.getKeyCode() == shootKey) && (shootCoolDown <= 0) && (e.getKeyLocation() == leftShift)) {
+            if ((e.getKeyCode() == shootKey) && (shootCoolDown <= 0)) {
                 if (e.getID() == KeyEvent.KEY_PRESSED) {
                     shootCoolDown = shootRate;
-                    System.out.println("P1 Shoot");
-                } else if (e.getID() != KeyEvent.KEY_RELEASED) {
-                }
-            }
-            if ((e.getKeyCode() == shootKey) && (shootCoolDown <= 0) && (e.getKeyLocation() == rightShift)) {
-                if (e.getID() == KeyEvent.KEY_PRESSED) {
-                    shootCoolDown = shootRate;
-                    System.out.println("P2 Shoot");
+                    ShootBullet(this);
+                    System.out.println("Shoot");
                 } else if (e.getID() != KeyEvent.KEY_RELEASED) {
                 }
             }

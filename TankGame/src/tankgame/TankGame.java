@@ -1,5 +1,7 @@
 package tankgame;
 
+
+import projectile.TankProjectile;
 import tankgame.BaseFiles.*;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class TankGame extends JApplet implements Runnable {
@@ -34,32 +37,82 @@ public class TankGame extends JApplet implements Runnable {
     private String winner, loser;
     private Thread thread;
     private Dimension windowSize;
-    private Image tankP1, tankP2;
+    private Image tankP1, tankP2, normalBullet, powerUpBullet;
     private BufferedImage background, bimg, bimg2;
     private BufferedImage player_1_window, player_2_window;
     private InputStream map;
     private Image wall, breakableWall;
 
     private ArrayList<Wall> walls = new ArrayList<>();
+    private ArrayList<TankProjectile> bullets = new ArrayList<>();
+    private ArrayList<Wall> wallsBreakable = new ArrayList<>();
+    
+    public ArrayList<TankProjectile> getProjectile(){
+        return bullets;
+    }
+    public ArrayList<Wall> getWall(){
+        return walls;
+    }
+    
+    
+    public Image getPowerUpBulletImage(){
+        return powerUpBullet;
+    }
+    
+    public Image getNormalBulletImage(){
+        return normalBullet;
+    }
+    
+    
+    
+    
 
     @Override
     public void init() {
         setFocusable(true);
         try {
-            background = ImageIO.read(new File("Resources/Background.bmp"));
-            tankP1 = ImageIO.read(new File("Resources/Tank1.gif"));
-            tankP2 = ImageIO.read(new File("Resources/Tank2.gif"));
-            life = ImageIO.read(new File("Resources/life.png"));
-            map = new FileInputStream("Resources/tankmap.txt");
-            wall = ImageIO.read(new File("Resources/Wall1.gif"));
-            breakableWall = ImageIO.read(new File("Resources/Wall2.gif"));
+            //background = ImageIO.read(new File("Resources/Background.bmp"));
+            //tankP1 = ImageIO.read(new File("Resources/Tank1.gif"));
+            //tankP2 = ImageIO.read(new File("Resources/Tank2.gif"));
+            //life = ImageIO.read(new File("Resources/life.png"));
+            //map = new FileInputStream("Resources/tankmap.txt");
+            //wall = ImageIO.read(new File("Resources/Wall1"));
+            //breakableWall = ImageIO.read(new File("Resources/Wall2.gif"));
+            
+            // URL mapUrl = this.getClass().getResource("Resources/tankmap.txt");
+            
+            URL backgroundUrl = this.getClass().getResource("Resources/Background.bmp");
+            URL tankP1Url = this.getClass().getResource("Resources/Tank1.gif");
+            URL tankP2Url = this.getClass().getResource("Resources/Tank2.gif");
+            URL lifeUrl = this.getClass().getResource("Resources/life.png");
+            URL wallUrl = this.getClass().getResource("Resources/Wall1.gif");
+            URL breakableWallUrl = this.getClass().getResource("Resources/Wall2.gif");
+            URL normalBulletUrl = this.getClass().getResource("Resources/Shell.gif");
+            //URL powerUpBulletUrl = this.getClass().getResource("Resources/Rocket.gif");
+            
+            background = ImageIO.read(backgroundUrl);
+            tankP1 = ImageIO.read(tankP1Url);
+            tankP2 = ImageIO.read(tankP2Url);
+            life = ImageIO.read(lifeUrl);
+            map = getClass().getResourceAsStream("Resources/tankmap.txt");
+            wall = ImageIO.read(wallUrl);
+            breakableWall = ImageIO.read(breakableWallUrl);
+            normalBullet = ImageIO.read(normalBulletUrl);
+            //powerUpBullet = ImageIO.read(powerUpBulletUrl);
+            
+            
+            
+            
+            
+            
+            
 
         } catch (Exception e) {
             System.err.println(e + " NO RESOURCES ARE FOUND!");
         }
 
-        p1 = new Tank(tankP1, 736, 64, 5, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_LEFT);
-        p2 = new Tank(tankP2, 736, 1440, 5, KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I, KeyEvent.VK_K, KeyEvent.VK_SHIFT, KeyEvent.KEY_LOCATION_RIGHT);
+        p1 = new Tank(tankP1, 736, 64, 5, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_C);
+        p2 = new Tank(tankP2, 736, 1440, 5, KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I, KeyEvent.VK_K, KeyEvent.VK_N);
         gameEvents = new GameEvents();
 
         gameEvents.addObserver(p1);
@@ -76,6 +129,8 @@ public class TankGame extends JApplet implements Runnable {
         }
         return p2;
     }
+    
+    
 
     public static TankGame getTankGame() {
         return TANKGAME;
@@ -149,6 +204,15 @@ public class TankGame extends JApplet implements Runnable {
         if (!walls.isEmpty()) {
             for (int i = 0; i <= walls.size() - 1; i++) {
                 walls.get(i).draw(this, g2);
+            }
+        }
+        
+        if(!bullets.isEmpty()){
+            for(int i = 0; i <= bullets.size() - 1; i++){
+                bullets.get(i).draw(this, g2);
+                if(!bullets.get(i).isVisible()){
+                    bullets.remove(i--);
+                }
             }
         }
 
