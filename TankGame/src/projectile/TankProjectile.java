@@ -28,8 +28,8 @@ public class TankProjectile extends Projectile {
      private TankGame obj;
     
     
-    public TankProjectile(Image img, int speed, Tank t, int sideSpeed, int dmg) {
-        super(img, t.getTankCenterX(), t.getTankCenterY(),speed,sideSpeed);
+    public TankProjectile(Image img, int speed, Tank t, int dmg) {
+        super(img, t.getTankCenterX(), t.getTankCenterY(),speed);
         bullet = img;
         damage = dmg;
         xSize = img.getWidth(null);
@@ -42,17 +42,20 @@ public class TankProjectile extends Projectile {
     
     @Override
     public void update(){
+        p2 = TankGame.getTank(2);
+        p1 = TankGame.getTank(1);
 
         y+=Math.round(speed*Math.sin(Math.toRadians(theta)));
         x+=Math.round(speed*Math.cos(Math.toRadians(theta)));
         
         if(p1.collision(x, y, xSize, ySize) && visible && currentTank != p1 && !p1.isRespawning()){
-            visible = false;
+            terminateBullet();
             p1.enemyBulletDmg(damage);
+            System.out.println(p1.getHealth());
             p2.setScore(30);
         }
         else if(p2.collision(x, y, xSize, ySize) && visible && currentTank != p2 && !p2.isRespawning()){
-            visible = false;
+            terminateBullet();
             p2.enemyBulletDmg(damage);
             p1.setScore(30);
         }
@@ -60,11 +63,12 @@ public class TankProjectile extends Projectile {
             obj = TankGame.getTankGame();
             for(int i = 0; i < obj.getWall().size()-1; i++){
                 Wall twall = obj.getWall().get(i);
-                if(twall.getWallRectangle().intersects(x,y,width/60,height) && twall.isRespawning()){
+                if(twall.getWallRectangle().intersects(x,y,width,height) && twall.isRespawning()){
                     if(twall.isDestroyAble()){
                         twall.breakWall();
+                        twall.update();
                     }
-                    visible = false;
+                    terminateBullet();                
                 }
             }
         }

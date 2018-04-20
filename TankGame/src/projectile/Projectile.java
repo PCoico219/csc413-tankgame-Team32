@@ -19,11 +19,10 @@ public class Projectile extends GameObj {
     
     int xSize;
     int ySize;
-    //Rectangle hitBox;
     Tank currentTank;
     Boolean visible;
 
-    public Projectile(Image img, int x, int y, int speed, int sideSpeed) {
+    public Projectile(Image img, int x, int y, int speed) {
         super(img, x, y, speed);
         visible = true;
     }

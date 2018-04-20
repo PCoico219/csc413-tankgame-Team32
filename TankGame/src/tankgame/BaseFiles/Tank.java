@@ -14,11 +14,11 @@ public class Tank extends GameObj {
 
     private int coolDown = 0, score = 0, health = 4, life = 3;
     private int angle = 0, shootCoolDown = 0;
-    private final int leftShift = 2, rightShift = 3, windowSizeX = 1473, windowSizeY = 1473;
+    private final int windowSizeX = 1473, windowSizeY = 1473;
     private boolean powerUp;
     private int spawnPointX, spawnPointY;
     private int left, right, up, down;
-    private int shootKey, shootRate, shootKeyPosition;
+    private int shootKey, shootRate;
     private boolean moveLeft, moveRight, moveUp, moveDown;
     private Tank p1, p2;
     private TankGame obj;
@@ -95,7 +95,7 @@ public class Tank extends GameObj {
             // obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
             //when shift is pressed need to add a bullet to the bullet arraylist and then project it on screen
             
-            obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
+            obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,1));
             
             
            

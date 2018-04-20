@@ -169,7 +169,7 @@ public class TankGame extends JApplet implements Runnable {
             drawDemo();
             g.drawImage(bimg2, 0, 0, this);
         } else {
-            g2.drawImage(win, windowSize.width / 2 - win.getWidth(null) / 2, 0, this);
+            //g2.drawImage(win, windowSize.width / 2 - win.getWidth(null) / 2, 0, this);
 
             g.drawImage(bimg, 0, 0, this);
         }
