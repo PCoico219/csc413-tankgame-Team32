@@ -1,6 +1,5 @@
 package tankgame;
 
-
 import projectile.TankProjectile;
 import tankgame.BaseFiles.*;
 import java.awt.Dimension;
@@ -46,26 +45,22 @@ public class TankGame extends JApplet implements Runnable {
     private ArrayList<Wall> walls = new ArrayList<>();
     private ArrayList<TankProjectile> bullets = new ArrayList<>();
     private ArrayList<Wall> wallsBreakable = new ArrayList<>();
-    
-    public ArrayList<TankProjectile> getProjectile(){
+
+    public ArrayList<TankProjectile> getProjectile() {
         return bullets;
     }
-    public ArrayList<Wall> getWall(){
+
+    public ArrayList<Wall> getWall() {
         return walls;
     }
-    
-    
-    public Image getPowerUpBulletImage(){
+
+    public Image getPowerUpBulletImage() {
         return powerUpBullet;
     }
-    
-    public Image getNormalBulletImage(){
+
+    public Image getNormalBulletImage() {
         return normalBullet;
     }
-    
-    
-    
-    
 
     @Override
     public void init() {
@@ -78,9 +73,8 @@ public class TankGame extends JApplet implements Runnable {
             //map = new FileInputStream("Resources/tankmap.txt");
             //wall = ImageIO.read(new File("Resources/Wall1"));
             //breakableWall = ImageIO.read(new File("Resources/Wall2.gif"));
-            
-            // URL mapUrl = this.getClass().getResource("Resources/tankmap.txt");
-            
+
+            //URL mapUrl = this.getClass().getResource("Resources/tankmap.txt");
             URL backgroundUrl = this.getClass().getResource("Resources/Background.bmp");
             URL tankP1Url = this.getClass().getResource("Resources/Tank1.gif");
             URL tankP2Url = this.getClass().getResource("Resources/Tank2.gif");
@@ -89,7 +83,7 @@ public class TankGame extends JApplet implements Runnable {
             URL breakableWallUrl = this.getClass().getResource("Resources/Wall2.gif");
             URL normalBulletUrl = this.getClass().getResource("Resources/Shell.gif");
             //URL powerUpBulletUrl = this.getClass().getResource("Resources/Rocket.gif");
-            
+
             background = ImageIO.read(backgroundUrl);
             tankP1 = ImageIO.read(tankP1Url);
             tankP2 = ImageIO.read(tankP2Url);
@@ -99,13 +93,6 @@ public class TankGame extends JApplet implements Runnable {
             breakableWall = ImageIO.read(breakableWallUrl);
             normalBullet = ImageIO.read(normalBulletUrl);
             //powerUpBullet = ImageIO.read(powerUpBulletUrl);
-            
-            
-            
-            
-            
-            
-            
 
         } catch (Exception e) {
             System.err.println(e + " NO RESOURCES ARE FOUND!");
@@ -129,8 +116,6 @@ public class TankGame extends JApplet implements Runnable {
         }
         return p2;
     }
-    
-    
 
     public static TankGame getTankGame() {
         return TANKGAME;
@@ -206,11 +191,11 @@ public class TankGame extends JApplet implements Runnable {
                 walls.get(i).draw(this, g2);
             }
         }
-        
-        if(!bullets.isEmpty()){
-            for(int i = 0; i <= bullets.size() - 1; i++){
+
+        if (!bullets.isEmpty()) {
+            for (int i = 0; i <= bullets.size() - 1; i++) {
                 bullets.get(i).draw(this, g2);
-                if(!bullets.get(i).isVisible()){
+                if (!bullets.get(i).isVisible()) {
                     bullets.remove(i--);
                 }
             }

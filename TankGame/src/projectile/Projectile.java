@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package projectile;
+
 import java.awt.image.ImageObserver;
 import java.awt.Rectangle;
 import java.awt.Image;
@@ -16,7 +17,7 @@ import tankgame.BaseFiles.Tank;
  * @author agunderson
  */
 public class Projectile extends GameObj {
-    
+
     int xSize;
     int ySize;
     Tank currentTank;
@@ -26,21 +27,20 @@ public class Projectile extends GameObj {
         super(img, x, y, speed);
         visible = true;
     }
-    
-    public void draw(ImageObserver iObs, Graphics2D graf){
-        
+
+    public void draw(ImageObserver iObs, Graphics2D graf) {
+
     }
-    
-    public void update(){
+
+    public void update() {
     }
-    
-    public Tank getTank(){
+
+    public Tank getTank() {
         return currentTank;
     }
-    
-    public boolean isVisible(){
+
+    public boolean isVisible() {
         return visible;
     }
-  
-    
+
 }

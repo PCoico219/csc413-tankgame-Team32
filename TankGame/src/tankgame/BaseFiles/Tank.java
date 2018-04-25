@@ -80,36 +80,28 @@ public class Tank extends GameObj {
     public boolean isRespawning() {
         return coolDown != 0;
     }
-    
-    
-    public void ShootBullet(Tank a){
-        
+
+    public void ShootBullet(Tank a) {
+
         obj = TankGame.getTankGame();
-        
+
         //if(powerUp == true){
-            //obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(), speed*3, this, 0, 2));
+        //obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(), speed*3, this, 0, 2));
         //    obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(),speed*3,this,0,2));
-            
         //}
         //else{
-            // obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
-            //when shift is pressed need to add a bullet to the bullet arraylist and then project it on screen
-            
-            obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,1));
-            
-            
-           
-       // }
-        
-        
+        // obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
+        //when shift is pressed need to add a bullet to the bullet arraylist and then project it on screen
+        obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed * 2, this, 1));
+
+        // }
     }
-    
 
     @Override
     public void draw(ImageObserver obs, Graphics2D g) {
         p1 = TankGame.getTank(1);
         p2 = TankGame.getTank(2);
-        
+
         shootCoolDown -= 1;
         if (health <= 0) {
             boom = true;
@@ -121,18 +113,18 @@ public class Tank extends GameObj {
             g.drawImage(img, rotation, null);
             if ((!p1.isRespawning()) && (!p2.isRespawning()) && (p1.collision(p2.x, p2.y, p2.width, p2.height))) {
                 if (p1.x > x) {
-                    p1.x += speed * 5;
-                    p2.x -= speed * 5;
+                    p1.x += speed;
+                    p2.x -= speed;
                 } else if (p1.x < x) {
-                    p1.x -= speed * 5;
-                    p2.x += speed * 5;
+                    p1.x -= speed;
+                    p2.x += speed;
                 }
                 if (p1.y > y) {
-                    p1.y += speed * 5;
-                    p2.y -= speed * 5;
+                    p1.y += speed;
+                    p2.y -= speed;
                 } else if (p1.y < y) {
-                    p1.y -= speed * 5;
-                    p2.y += speed * 5;
+                    p1.y -= speed;
+                    p2.y += speed;
                 }
             }
         } else if ((boom == true) && (coolDown == 0) && (life > 0)) {
@@ -241,13 +233,13 @@ public class Tank extends GameObj {
             y = ((int) (y - Math.round(speed * Math.sin(Math.toRadians(angle)))));
             checkLimit();
         }
-        
+
         if (angle == -1) {
             angle = 359;
         } else if (angle == 361) {
             angle = 1;
         }
-        
+
         if (coolDown > 0) {
             moveLeft = false;
             moveRight = false;

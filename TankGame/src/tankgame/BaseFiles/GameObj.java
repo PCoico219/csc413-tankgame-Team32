@@ -36,7 +36,7 @@ public abstract class GameObj implements Observer {
     public Image getImg() {
         return this.img;
     }
-    
+
     public int getX() {
         return this.x;
     }
@@ -48,7 +48,7 @@ public abstract class GameObj implements Observer {
     public int getWidth() {
         return width;
     }
-    
+
     public int getSpeed() {
         return speed;
     }
@@ -56,11 +56,11 @@ public abstract class GameObj implements Observer {
     public int getHeight() {
         return height;
     }
-    
+
     public boolean getBoom() {
         return boom;
     }
-    
+
     @Override
     public void update(Observable obj, Object arg) {
     }

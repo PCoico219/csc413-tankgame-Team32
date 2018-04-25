@@ -51,7 +51,7 @@ public class Wall extends GameObj {
 
     public void update() {
         if (p1.collision(this.x, this.y, width, height)) {
-            if (p1.x > (x)) { 
+            if (p1.x > (x)) {
                 p1.x += 3;
             } else if (p1.x < (this.x)) {
                 p1.x -= 3;
