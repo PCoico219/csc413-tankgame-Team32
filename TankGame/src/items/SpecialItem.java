@@ -12,7 +12,7 @@ import tankgame.BaseFiles.GameObj;
 
 /**
  *
- * @author agunderson
+ * @author akeelin
  */
 public abstract class SpecialItem extends GameObj {
 

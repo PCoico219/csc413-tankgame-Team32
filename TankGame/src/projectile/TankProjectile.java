@@ -17,7 +17,7 @@ import java.awt.image.ImageObserver;
 
 /**
  *
- * @author agunderson
+ * @author akeelin
  */
 public class TankProjectile extends Projectile {
 

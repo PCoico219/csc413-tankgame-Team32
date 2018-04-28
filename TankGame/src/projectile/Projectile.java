@@ -14,7 +14,7 @@ import tankgame.BaseFiles.Tank;
 
 /**
  *
- * @author agunderson
+ * @author akeelin
  */
 public class Projectile extends GameObj {
 
