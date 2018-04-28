@@ -5,7 +5,7 @@ IDE used: NetBeans
 
 Java Version: 1.8.0_162
 
-Directions on loading game:
+# Directions on loading game:
 1. Clone repository from Github
 2. This project was created from NetBeans, and should be able to be opened in NetBeans as a Project, so
 3. Open NetBeans
@@ -18,7 +18,7 @@ Directions on loading game:
 10. NetBeans will now compile, build, and run the game if the latter two were successful
 11. When the game is over, close out of the window that was produced after building the project
 
-Directions for playing game:
+# Directions for playing game:
 1. Both tanks will start off on their end of the map
 2. Player 1 will move using WASD and shoot using C
 3. Player 2 will move using IJKL and shoot using N
