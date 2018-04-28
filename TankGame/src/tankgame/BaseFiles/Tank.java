@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
-import java.io.PrintStream;
 import java.util.Observable;
 import tankgame.*;
 import projectile.*;
@@ -14,7 +13,7 @@ public class Tank extends GameObj {
 
     private int coolDown = 0, score = 0, health = 4, life = 3;
     private int angle = 0, shootCoolDown = 0;
-    private final int windowSizeX = 1473, windowSizeY = 1473;
+    private final int windowSizeX = 1473, windowSizeY = 1473, startAngle = 0;
     private boolean powerUp;
     private int spawnPointX, spawnPointY;
     private int left, right, up, down;
@@ -22,9 +21,6 @@ public class Tank extends GameObj {
     private boolean moveLeft, moveRight, moveUp, moveDown;
     private Tank p1, p2;
     private TankGame obj;
-    //private int height, width, speed;
-    //private int x, y;
-    //private Image img;
 
     public Tank(Image img, int x, int y, int speed, int left, int right, int up, int down, int sKey) {
         super(img, x, y, speed);
@@ -40,7 +36,7 @@ public class Tank extends GameObj {
         moveRight = false;
         moveUp = false;
         moveDown = false;
-        boom = false;
+        dead = false;
         shootRate = 50;
         spawnPointX = x;
         spawnPointY = y;
@@ -61,6 +57,25 @@ public class Tank extends GameObj {
         health = hp;
     }
 
+    public void healthIncrease() {
+        switch (this.health) {
+            case 1:
+                this.health += 3;
+                break;
+            case 2:
+                this.health += 2;
+                break;
+            case 3:
+                this.health += 1;
+                break;
+            case 4:
+                this.health += 0;
+                break;
+            default:
+                break;
+        }
+    }
+
     public void enemyBulletDmg(int dmg) {
         health -= dmg;
     }
@@ -74,7 +89,7 @@ public class Tank extends GameObj {
     }
 
     public void setBoom(boolean b) {
-        boom = b;
+        dead = b;
     }
 
     public boolean isRespawning() {
@@ -85,16 +100,8 @@ public class Tank extends GameObj {
 
         obj = TankGame.getTankGame();
 
-        //if(powerUp == true){
-        //obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(), speed*3, this, 0, 2));
-        //    obj.getProjectile().add(new TankProjectile(obj.getPowerUpBulletImage(),speed*3,this,0,2));
-        //}
-        //else{
-        // obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed*2,this,0,1));
-        //when shift is pressed need to add a bullet to the bullet arraylist and then project it on screen
         obj.getProjectile().add(new TankProjectile(obj.getNormalBulletImage(), speed * 2, this, 1));
 
-        // }
     }
 
     @Override
@@ -104,10 +111,10 @@ public class Tank extends GameObj {
 
         shootCoolDown -= 1;
         if (health <= 0) {
-            boom = true;
+            dead = true;
         }
         if ((health > 0) && (coolDown == 0) && (life > 0)) {
-            boom = false;
+            dead = false;
             AffineTransform rotation = AffineTransform.getTranslateInstance(x, y);
             rotation.rotate(Math.toRadians(angle), img.getWidth(null) / 2, img.getHeight(null) / 2);
             g.drawImage(img, rotation, null);
@@ -127,15 +134,16 @@ public class Tank extends GameObj {
                     p2.y += speed;
                 }
             }
-        } else if ((boom == true) && (coolDown == 0) && (life > 0)) {
+        } else if ((dead == true) && (coolDown == 0) && (life > 0)) {
             coolDown = 180;
             powerUp = false;
             if (--life >= 0) {
                 health = 4;
             }
-            boom = false;
+            dead = false;
             x = spawnPointX;
             y = spawnPointY;
+            angle = startAngle;
         } else {
             coolDown -= 1;
         }
@@ -144,7 +152,7 @@ public class Tank extends GameObj {
     @Override
     public void update(Observable obj, Object arg) {
         GameEvents ge = (GameEvents) arg;
-        if ((ge.type == 1) && (!boom) && (coolDown == 0)) {
+        if ((ge.type == 1) && (!dead) && (coolDown == 0)) {
             KeyEvent e = (KeyEvent) ge.event;
             if (e.getKeyCode() == left) {
                 if (e.getID() == KeyEvent.KEY_RELEASED) {
@@ -186,7 +194,7 @@ public class Tank extends GameObj {
     }
 
     public int getHealth() {
-        return health;
+        return this.health;
     }
 
     public int getAngle() {

@@ -11,7 +11,7 @@ public abstract class GameObj implements Observer {
 
     protected int x, y, speed, height, width;
     Rectangle bbox;
-    protected boolean boom;
+    protected boolean dead;
     protected Image[] imgs = new Image[3];
     protected Image img;
 
@@ -27,7 +27,7 @@ public abstract class GameObj implements Observer {
     public boolean collision(int x, int y, int w, int h) {
         bbox = new Rectangle(this.x, this.y, this.width, this.height);
         Rectangle otherBBox = new Rectangle(x, y, w, h);
-        if ((this.bbox.intersects(otherBBox)) && (!boom)) {
+        if ((this.bbox.intersects(otherBBox)) && (!dead)) {
             return true;
         }
         return false;
@@ -58,7 +58,7 @@ public abstract class GameObj implements Observer {
     }
 
     public boolean getBoom() {
-        return boom;
+        return dead;
     }
 
     @Override

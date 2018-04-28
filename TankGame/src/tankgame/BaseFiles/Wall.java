@@ -19,7 +19,7 @@ public class Wall extends GameObj {
         breakableWall = weakWall;
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
-        boom = false;
+        dead = false;
         wallRect = new Rectangle(x, y, width, height);
     }
 
